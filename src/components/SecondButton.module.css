@@ -1,0 +1,12 @@
+.wrapper {
+    text-align: center;
+}
+
+button {
+    width: 5vw;
+    height: 5vw;
+}
+
+button.plus {
+    margin-right: 1vw;
+}

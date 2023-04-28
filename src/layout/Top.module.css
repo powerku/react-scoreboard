@@ -1,0 +1,25 @@
+.top {
+    display: flex;
+    /*justify-content: center;*/
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.top > div {
+    flex: 1
+}
+
+.colon {
+    display: block;
+    font-family: Digital, serif;
+    font-size: 22rem;
+    color: red;
+}
+
+.center {
+    text-align: center;
+}
+

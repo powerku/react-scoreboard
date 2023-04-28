@@ -1,0 +1,8 @@
+.count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: yellow;
+    font-size: 22rem;
+    font-family: Digital, serif;
+}
