@@ -89,7 +89,11 @@ function Top() {
         <Foul count={awayFoul}></Foul>
       </div>
       <div className={classes.container}>
-        <FoulButton count={homeFoul} setCount={setHomeFoul}></FoulButton>
+        <FoulButton
+          type="Home"
+          count={homeFoul}
+          setCount={setHomeFoul}
+        ></FoulButton>
         <MinuteButton minute={minute} setMinute={setMinute} />
         <div className={classes.buttonWrapper}>
           <button
@@ -103,7 +107,11 @@ function Top() {
           </button>
         </div>
         <SecondButton second={second} setSecond={setSecond} />
-        <FoulButton count={awayFoul} setCount={setAwayFoul}></FoulButton>
+        <FoulButton
+          type="Away"
+          count={awayFoul}
+          setCount={setAwayFoul}
+        ></FoulButton>
       </div>
     </React.Fragment>
   );

@@ -1,0 +1,10 @@
+.soundButtonGroup {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 120px;
+}
+
+.soundButton {
+    margin-bottom: 5px;
+}
