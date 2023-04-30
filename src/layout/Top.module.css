@@ -1,11 +1,11 @@
 .top {
     display: flex;
-    /*justify-content: center;*/
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
     align-items: center;
-    width: 100%;
+    width: 70%;
     height: 100%;
+    margin: 0 auto;
 }
 
 .top > div {
@@ -23,3 +23,24 @@
     text-align: center;
 }
 
+.center button:first-child {
+    margin-right: 0;
+    margin-bottom: 5px;
+}
+
+.buttonWrapper {
+    text-align: center;
+    height: 50px
+}
+
+.startBtn {
+    width: 103px
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    width: 70%;
+}

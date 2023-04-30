@@ -9,3 +9,17 @@
     font-size: 22rem;
     color: red;
 }
+
+.team {
+    display: inline-block;
+    text-align: center;
+    margin-right: 50px;
+    width: 200px;
+}
+
+.team h2 {
+    font-size: 50px;
+    margin-top: 0;
+    color: white;
+    margin-bottom: 0;
+}

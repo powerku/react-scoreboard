@@ -3,10 +3,16 @@ import MinuteClock from "../components/MinuteClock";
 import Foul from "../components/Foul";
 import SecondClock from "../components/SecondClock";
 import React, { useCallback, useRef, useState } from "react";
+import FoulButton from "../components/FoulButton";
+import MinuteButton from "../components/MinuteButton";
+import SecondButton from "../components/SecondButton";
 function Top() {
   const [state, setState] = useState("stop");
   const [minute, setMinute] = useState(10);
   const [second, setSecond] = useState(0);
+  const [homeFoul, setHomeFoul] = useState(0);
+  const [awayFoul, setAwayFoul] = useState(0);
+
   const intervalRef = useRef(null);
 
   function resetButtonHandler() {
@@ -26,7 +32,6 @@ function Top() {
     }
   }
   const minusMinute = (minute) => {
-    console.log(minute);
     minute = Number(minute) - 1;
     if (minute < 0) {
       minute = 0;
@@ -68,17 +73,27 @@ function Top() {
   return (
     <React.Fragment>
       <div className={classes.top}>
-        <Foul></Foul>
+        <Foul count={homeFoul}></Foul>
         <MinuteClock minute={minute} setMinute={setMinute} />
         <div className={classes.center}>
           <span className={classes.colon}>:</span>
-          <button onClick={startButtonHandler}>
-            {state === "stop" ? "Start" : "Stop"}
-          </button>
-          <button onClick={resetButtonHandler}>Reset</button>
         </div>
         <SecondClock second={second} setSecond={setSecond} />
-        <Foul></Foul>
+        <Foul count={awayFoul}></Foul>
+      </div>
+      <div className={classes.container}>
+        <FoulButton count={homeFoul} setCount={setHomeFoul}></FoulButton>
+        <MinuteButton minute={minute} setMinute={setMinute} />
+        <div className={classes.buttonWrapper}>
+          <button className={classes.startBtn} onClick={startButtonHandler}>
+            {state === "stop" ? "Start" : "Stop"}
+          </button>
+          <button className={classes.startBtn} onClick={resetButtonHandler}>
+            Reset
+          </button>
+        </div>
+        <SecondButton second={second} setSecond={setSecond} />
+        <FoulButton count={awayFoul} setCount={setAwayFoul}></FoulButton>
       </div>
     </React.Fragment>
   );

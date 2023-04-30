@@ -5,9 +5,9 @@ import ShotClock from "../components/ShotClock";
 function Bottom() {
   return (
     <div className={classes.bottom}>
-      <Score />
+      <Score type="Home" />
       <ShotClock />
-      <Score />
+      <Score type="Away" />
     </div>
   );
 }

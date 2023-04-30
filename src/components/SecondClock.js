@@ -8,7 +8,6 @@ function SecondClock(props) {
   return (
     <div>
       <div className={classes.area}>{value}</div>
-      <SecondButton second={props.second} setSecond={props.setSecond} />
     </div>
   );
 }

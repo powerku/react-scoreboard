@@ -3,6 +3,19 @@
     justify-content: center;
     align-items: center;
     color: yellow;
-    font-size: 22rem;
+    font-size: 12rem;
     font-family: Digital, serif;
+}
+
+.foul {
+    display: inline-block;
+    text-align: center;
+    width: 200px;
+}
+
+.foul h2 {
+    font-size: 30px;
+    margin-top: 0;
+    color: white;
+    margin-bottom: 0;
 }
