@@ -4,7 +4,9 @@ import MinuteButton from "./MinuteButton";
 function MinuteClock(props) {
   return (
     <div>
-      <div className={classes.area}>{props.minute}</div>
+      <div className={classes.area}>
+        {props.minute.toString().padStart(2, "0")}
+      </div>
     </div>
   );
 }

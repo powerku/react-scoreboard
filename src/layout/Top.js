@@ -2,73 +2,80 @@ import classes from "./Top.module.css";
 import MinuteClock from "../components/MinuteClock";
 import Foul from "../components/Foul";
 import SecondClock from "../components/SecondClock";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import FoulButton from "../components/FoulButton";
 import MinuteButton from "../components/MinuteButton";
 import SecondButton from "../components/SecondButton";
+import buzzerUrl from "../sound/buzzer.mp3";
+
 function Top() {
-  const [state, setState] = useState("stop");
+  // const [state, setState] = useState("stop");
   const [minute, setMinute] = useState(10);
   const [second, setSecond] = useState(0);
   const [homeFoul, setHomeFoul] = useState(0);
   const [awayFoul, setAwayFoul] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const intervalRef = useRef(null);
+  const buzzer = new Audio(buzzerUrl);
+
+  useEffect(() => {
+    let intervalId = null;
+
+    if (isRunning) {
+      intervalId = setInterval(() => {
+        console.log("second", second);
+        console.log("minute", minute);
+
+        if (second === 0) {
+          if (Number(minute) === 0) {
+            setIsRunning(false);
+            buzzer.play();
+            clearInterval(intervalId);
+          } else {
+            setMinute((minutes) => minutes - 1);
+            setSecond(59);
+          }
+        } else {
+          setSecond((seconds) => seconds - 1);
+        }
+      }, 1000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [second, minute, isRunning]);
+
+  const handleKeyUp = useCallback(
+    (event) => {
+      // do stuff with stateVariable and event
+      console.log(event);
+    },
+    [second, minute, isRunning]
+  );
+
+  useEffect(() => {
+    const shortcut = (event) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        setIsRunning(!isRunning);
+      }
+
+      if (event.key === "Shift") {
+        event.preventDefault();
+        resetButtonHandler();
+      }
+    };
+
+    document.addEventListener("keyup", shortcut);
+    return () => {
+      document.removeEventListener("keyup", shortcut);
+    };
+  }, [handleKeyUp]);
 
   function resetButtonHandler() {
-    stop();
+    setIsRunning(false);
     setMinute(10);
     setSecond(0);
   }
-
-  function startButtonHandler() {
-    console.log("state", state);
-    if (state === "stop") {
-      setState("start");
-      start();
-    } else {
-      setState("stop");
-      stop();
-    }
-  }
-  const minusMinute = (minute) => {
-    minute = Number(minute) - 1;
-    if (minute < 0) {
-      minute = 0;
-    }
-
-    minute = minute.toString().length < 2 ? "0" + minute : minute;
-    setMinute(minute);
-  };
-
-  function minusSecond() {
-    setSecond((c) => {
-      let value = Number(c) - 1;
-      if (value < 0) {
-        minusMinute(minute);
-        value = 59;
-      }
-      value = value.toString().length < 2 ? "0" + value : value;
-      return value;
-    });
-  }
-
-  const start = useCallback(() => {
-    if (intervalRef.current !== null) {
-      return;
-    }
-    intervalRef.current = setInterval(() => {
-      minusSecond();
-    }, 1000);
-  }, [minute]);
-
-  const stop = useCallback(() => {
-    if (intervalRef.current === null) {
-      return;
-    }
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-  }, [minute]);
 
   return (
     <React.Fragment>
@@ -85,8 +92,11 @@ function Top() {
         <FoulButton count={homeFoul} setCount={setHomeFoul}></FoulButton>
         <MinuteButton minute={minute} setMinute={setMinute} />
         <div className={classes.buttonWrapper}>
-          <button className={classes.startBtn} onClick={startButtonHandler}>
-            {state === "stop" ? "Start" : "Stop"}
+          <button
+            className={classes.startBtn}
+            onClick={() => setIsRunning(!isRunning)}
+          >
+            {!isRunning ? "Start" : "Stop"}
           </button>
           <button className={classes.startBtn} onClick={resetButtonHandler}>
             Reset

@@ -2,7 +2,8 @@ import Score from "../components/Score";
 import classes from "./Bottom.module.css";
 import ShotClock from "../components/ShotClock";
 import ScorePointButton from "../components/ScorePointButton";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import buzzerUrl from "../sound/buzzer.mp3";
 
 function Bottom() {
   const [homeScore, setHomeScore] = useState(0);
@@ -10,6 +11,7 @@ function Bottom() {
   const [state, setState] = useState("stop");
   const [shot, setShot] = useState(24);
   const intervalRef = useRef(null);
+  const buzzer = new Audio(buzzerUrl);
 
   function plusShot() {
     let value = Number(shot) + 1;
@@ -18,12 +20,53 @@ function Bottom() {
     setShot(value);
   }
 
+  const handleKeyUp = useCallback(
+    (event) => {
+      // do stuff with stateVariable and event
+      console.log(event);
+    },
+    [state]
+  );
+
+  useEffect(() => {
+    const shortcut = (event) => {
+      console.log(event);
+      if (event.code === "KeyA") {
+        // 공격 시간 시작/중지
+        event.preventDefault();
+        startHandler();
+      }
+      if (event.code === "KeyS") {
+        // 공격 시간 리셋
+        event.preventDefault();
+        reset();
+      }
+
+      if (event.code === "KeyD") {
+        // 공격 시간 14초
+        event.preventDefault();
+        reset14sec();
+      }
+    };
+    document.addEventListener("keyup", shortcut);
+    return () => {
+      document.removeEventListener("keyup", shortcut);
+    };
+  }, [handleKeyUp]);
+
   function minusShot() {
     setShot((c) => {
       let value = Number(c) - 1;
+      if (value === 0) {
+        buzzer.play().then(() => {
+          stop();
+        });
+        setState("stop");
+      }
       if (value < 0) {
         value = 0;
       }
+
       value = value.toString().length < 2 ? "0" + value : value;
       return value;
     });
@@ -32,6 +75,7 @@ function Bottom() {
   function reset() {
     stop();
     setShot(24);
+    setState("stop");
   }
 
   function reset14sec() {
@@ -74,9 +118,13 @@ function Bottom() {
         <Score type="Away" score={awayScore} />
       </div>
       <div className={classes.container}>
-        <ScorePointButton score={homeScore} setScore={setHomeScore} />
+        <ScorePointButton
+          type="Home"
+          score={homeScore}
+          setScore={setHomeScore}
+        />
         <div className={classes.buttonGroup}>
-          <button onClick={startHandler}>
+          <button className={classes.startButton} onClick={startHandler}>
             {state === "stop" ? "Start" : "Stop"}
           </button>
           <button onClick={plusShot}>+</button>
@@ -84,7 +132,11 @@ function Bottom() {
           <button onClick={reset}>Reset</button>
           <button onClick={reset14sec}>14</button>
         </div>
-        <ScorePointButton score={awayScore} setScore={setAwayScore} />
+        <ScorePointButton
+          type="Away"
+          score={awayScore}
+          setScore={setAwayScore}
+        />
       </div>
     </React.Fragment>
   );
