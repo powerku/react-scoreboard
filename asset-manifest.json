@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/react-scoreboard/static/css/main.07713b6b.css",
-    "main.js": "/react-scoreboard/static/js/main.c32ce728.js",
+    "main.css": "/react-scoreboard/static/css/main.7e6bfce0.css",
+    "main.js": "/react-scoreboard/static/js/main.8b43a5ed.js",
+    "static/media/buzzer.mp3": "/react-scoreboard/static/media/buzzer.ee37d6ea31548104295b.mp3",
     "static/media/Digital_Dismay.otf": "/react-scoreboard/static/media/Digital_Dismay.8a8838f38696eb20b243.otf",
     "index.html": "/react-scoreboard/index.html",
-    "main.07713b6b.css.map": "/react-scoreboard/static/css/main.07713b6b.css.map",
-    "main.c32ce728.js.map": "/react-scoreboard/static/js/main.c32ce728.js.map"
+    "main.7e6bfce0.css.map": "/react-scoreboard/static/css/main.7e6bfce0.css.map",
+    "main.8b43a5ed.js.map": "/react-scoreboard/static/js/main.8b43a5ed.js.map"
   },
   "entrypoints": [
-    "static/css/main.07713b6b.css",
-    "static/js/main.c32ce728.js"
+    "static/css/main.7e6bfce0.css",
+    "static/js/main.8b43a5ed.js"
   ]
 }
