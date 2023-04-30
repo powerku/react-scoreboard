@@ -1,14 +1,10 @@
 import classes from "./Score.module.css";
-import ScorePointButton from "./ScorePointButton";
-import { useState } from "react";
-function Score(props) {
-  const [score, setScore] = useState(0);
 
+function Score(props) {
   return (
     <div className={`${classes.wrapper} ${classes.team}`}>
-        <h2>{props.type}</h2>
-      <div className={classes.number}>{score}</div>
-      <ScorePointButton score={score} setScore={setScore} />
+      <h2>{props.type}</h2>
+      <div className={classes.number}>{props.score}</div>
     </div>
   );
 }
