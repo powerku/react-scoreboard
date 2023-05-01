@@ -1,5 +1,5 @@
 .wrapper {
-    flex: 1;
+    flex: 1 42%;
 }
 
 .buttonGroup {
@@ -11,6 +11,14 @@
     justify-content: center;
     align-items: center;
     font-family: Digital, Serif;
-    font-size: 22rem;
+    font-size: 400px;
     color: yellow;
+}
+
+@media (max-width: 767px) {
+    .shot { font-size: 130px; }
+}
+
+@media (max-width: 430px) {
+    .shot { font-size: 100px; }
 }

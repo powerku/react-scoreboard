@@ -23,9 +23,6 @@ function Top() {
 
     if (isRunning) {
       intervalId = setInterval(() => {
-        console.log("second", second);
-        console.log("minute", minute);
-
         if (second === 0) {
           if (Number(minute) === 0) {
             setIsRunning(false);
@@ -47,7 +44,6 @@ function Top() {
   const handleKeyUp = useCallback(
     (event) => {
       // do stuff with stateVariable and event
-      console.log(event);
     },
     [second, minute, isRunning]
   );
@@ -80,38 +76,33 @@ function Top() {
   return (
     <React.Fragment>
       <div className={classes.top}>
-        <Foul count={homeFoul}></Foul>
-        <MinuteClock minute={minute} setMinute={setMinute} />
-        <div className={classes.center}>
-          <span className={classes.colon}>:</span>
+        <Foul type="Home" count={homeFoul} setCount={setHomeFoul}></Foul>
+        <div>
+          <div className={classes.timeWrapper}>
+            <MinuteClock minute={minute} setMinute={setMinute} />
+            <div className={classes.center}>
+              <span className={classes.colon}>:</span>
+            </div>
+            <SecondClock second={second} setSecond={setSecond} />
+          </div>
+          <div className={classes.buttonWrapper}>
+            <MinuteButton minute={minute} setMinute={setMinute} />
+            <div>
+              <button
+                className={classes.startBtn}
+                onClick={() => setIsRunning(!isRunning)}
+              >
+                {!isRunning ? "Start" : "Stop"}
+              </button>
+              <button className={classes.startBtn} onClick={resetButtonHandler}>
+                Reset
+              </button>
+            </div>
+
+            <SecondButton second={second} setSecond={setSecond} />
+          </div>
         </div>
-        <SecondClock second={second} setSecond={setSecond} />
-        <Foul count={awayFoul}></Foul>
-      </div>
-      <div className={classes.container}>
-        <FoulButton
-          type="Home"
-          count={homeFoul}
-          setCount={setHomeFoul}
-        ></FoulButton>
-        <MinuteButton minute={minute} setMinute={setMinute} />
-        <div className={classes.buttonWrapper}>
-          <button
-            className={classes.startBtn}
-            onClick={() => setIsRunning(!isRunning)}
-          >
-            {!isRunning ? "Start" : "Stop"}
-          </button>
-          <button className={classes.startBtn} onClick={resetButtonHandler}>
-            Reset
-          </button>
-        </div>
-        <SecondButton second={second} setSecond={setSecond} />
-        <FoulButton
-          type="Away"
-          count={awayFoul}
-          setCount={setAwayFoul}
-        ></FoulButton>
+        <Foul type="Away" count={awayFoul} setCount={setAwayFoul}></Foul>
       </div>
     </React.Fragment>
   );

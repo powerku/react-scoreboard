@@ -1,14 +1,36 @@
 .wrapper {
-    flex: 1
+    flex: 1 29%
 }
+
+.wrapper span {
+    font-size: 51px;
+    font-weight: bold;
+    color: white;
+}
+
 .number {
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Digital, Serif;
-    font-size: 22rem;
+    font-size: 350px;
     color: red;
 }
+
+@media (max-width: 767px) {
+    .wrapper span{
+        font-size: 30px;
+    }
+    .number { font-size: 100px; }
+}
+
+@media (max-width: 430px) {
+    .wrapper span{
+        font-size: 20px;
+    }
+    .number { font-size: 80px; }
+}
+
 
 .team {
     display: inline-block;
@@ -17,7 +39,6 @@
 }
 
 .team h2 {
-    font-size: 50px;
     margin-top: 0;
     color: white;
     margin-bottom: 0;

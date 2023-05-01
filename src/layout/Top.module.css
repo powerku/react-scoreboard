@@ -1,21 +1,19 @@
 .top {
     display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    width: 70%;
-    height: 100%;
-    margin: 0 auto;
+    align-items: flex-end;
+    width: 100%;
+    height: 50%;
+    justify-content: space-between
 }
 
 .top > div {
     flex: 1
 }
 
+
 .colon {
     display: block;
     font-family: Digital, serif;
-    font-size: 22rem;
     color: red;
 }
 
@@ -28,13 +26,26 @@
     margin-bottom: 5px;
 }
 
-.buttonWrapper {
-    text-align: center;
-    height: 50px
+.timeWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 400px;
 }
 
-.startBtn {
-    width: 103px
+@media (max-width: 767px) {
+    .timeWrapper { font-size: 120px; }
+}
+
+@media (max-width: 430px) {
+    .timeWrapper { font-size: 100px; }
+}
+
+.buttonWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
 }
 
 .container {

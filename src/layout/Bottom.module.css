@@ -1,9 +1,13 @@
 .bottom {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
-    flex: 1;
+    height: 50%;
     justify-content: space-between;
+}
+
+.bottom > div {
+    /*flex: 1*/
 }
 
 .container {
@@ -11,10 +15,11 @@
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    width: 85%;
+    width: 100%;
+
     text-align: center;
 }
 
 .startButton {
-    width: 103px
+    /*width: 103px*/
 }

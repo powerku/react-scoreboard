@@ -11,7 +11,6 @@ body {
     Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     color: #20232a;
     font-size: 16px;
-    font-weight: 400;
     height: 100%;
     line-height: 1;
 }
@@ -19,3 +18,39 @@ body {
 #root {
     height: 100%;
 }
+
+button {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 0 5px #0056b3;
+}
+
+
+@media (max-width: 767px) {
+    body { font-size: 14px; }
+    button {
+        font-size: 1em;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 639px) {
+    body { font-size: 12px; }
+}
+

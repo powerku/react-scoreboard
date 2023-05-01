@@ -1,16 +1,9 @@
 .wrapper {
     text-align: center;
-    height: 50px
-}
-
-button.plus {
-    margin-right: 1vw;
 }
 
 button {
     display: inline-block;
-    padding: 10px 20px;
-    font-size: 1.2rem;
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;

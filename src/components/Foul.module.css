@@ -1,21 +1,38 @@
 .count {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: yellow;
-    font-size: 12rem;
+    font-size: 250px;
     font-family: Digital, serif;
 }
 
 .foul {
-    display: inline-block;
-    text-align: center;
-    width: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
-.foul h2 {
-    font-size: 30px;
-    margin-top: 0;
+.home {
+    align-items: flex-end;
+}
+.away {
+    align-items: flex-start;
+}
+
+.foul span {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
     color: white;
-    margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    .foul span{
+        font-size: 30px;
+    }
+    .count { font-size: 100px; }
+}
+
+@media (max-width: 430px) {
+    .foul span{
+        font-size: 20px;
+    }
+    .count { font-size: 80px; }
 }
