@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import FoulButton from "../components/FoulButton";
 import MinuteButton from "../components/MinuteButton";
 import SecondButton from "../components/SecondButton";
-import buzzerUrl from "../sound/buzzer.mp3";
+import longBuzzerUrl from "../sound/longBuzzer.mp3";
 
 function Top() {
   // const [state, setState] = useState("stop");
@@ -16,7 +16,7 @@ function Top() {
   const [awayFoul, setAwayFoul] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
-  const buzzer = new Audio(buzzerUrl);
+  const longBuzzer = new Audio(longBuzzerUrl);
 
   useEffect(() => {
     let intervalId = null;
@@ -26,7 +26,7 @@ function Top() {
         if (second <= 0) {
           if (minute <= 0) {
             setIsRunning(false);
-            buzzer.play();
+            longBuzzer.play();
             clearInterval(intervalId);
           } else {
             setMinute((minutes) => minutes - 1);

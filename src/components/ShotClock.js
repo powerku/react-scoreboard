@@ -24,7 +24,6 @@ function ShotClock(props) {
 
   useEffect(() => {
     const shortcut = (event) => {
-      console.log(event);
       if (event.code === "KeyA") {
         // 공격 시간 시작/중지
         event.preventDefault();
