@@ -9,8 +9,6 @@ function SecondButton(props) {
     if (second > 60) {
       second = 0;
     }
-    second = second.toString().length < 2 ? "0" + second : second;
-
     setSecond(second);
   }
 
@@ -19,8 +17,6 @@ function SecondButton(props) {
     if (second < 0) {
       second = 0;
     }
-
-    second = second.toString().length < 2 ? "0" + second : second;
     setSecond(second);
   }
 

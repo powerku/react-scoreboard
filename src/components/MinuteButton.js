@@ -9,7 +9,6 @@ function MinuteButton(props) {
     if (minute > 99) {
       minute = 99;
     }
-    minute = minute.toString().length < 2 ? "0" + minute : minute;
 
     setMinute(minute);
   }
@@ -20,15 +19,12 @@ function MinuteButton(props) {
       minute = 0;
     }
 
-    minute = minute.toString().length < 2 ? "0" + minute : minute;
     setMinute(minute);
   }
 
   return (
     <div className={classes.wrapper}>
-      <button onClick={plusBtnClickHandler} className={classes.plus}>
-        +
-      </button>
+      <button onClick={plusBtnClickHandler}>+</button>
       <button onClick={minusBtnClickHandler}>-</button>
     </div>
   );

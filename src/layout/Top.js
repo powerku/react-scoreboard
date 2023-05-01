@@ -23,8 +23,8 @@ function Top() {
 
     if (isRunning) {
       intervalId = setInterval(() => {
-        if (second === 0) {
-          if (Number(minute) === 0) {
+        if (second <= 0) {
+          if (minute <= 0) {
             setIsRunning(false);
             buzzer.play();
             clearInterval(intervalId);
@@ -88,17 +88,11 @@ function Top() {
           <div className={classes.buttonWrapper}>
             <MinuteButton minute={minute} setMinute={setMinute} />
             <div>
-              <button
-                className={classes.startBtn}
-                onClick={() => setIsRunning(!isRunning)}
-              >
+              <button onClick={() => setIsRunning(!isRunning)}>
                 {!isRunning ? "Start" : "Stop"}
               </button>
-              <button className={classes.startBtn} onClick={resetButtonHandler}>
-                Reset
-              </button>
+              <button onClick={resetButtonHandler}>Reset</button>
             </div>
-
             <SecondButton second={second} setSecond={setSecond} />
           </div>
         </div>
