@@ -88,10 +88,15 @@ function Top() {
           <div className={classes.buttonWrapper}>
             <MinuteButton minute={minute} setMinute={setMinute} />
             <div>
-              <button onClick={() => setIsRunning(!isRunning)}>
+              <button
+                className="start"
+                onClick={() => setIsRunning(!isRunning)}
+              >
                 {!isRunning ? "Start" : "Stop"}
               </button>
-              <button onClick={resetButtonHandler}>Reset</button>
+              <button className="start" onClick={resetButtonHandler}>
+                Reset
+              </button>
             </div>
             <SecondButton second={second} setSecond={setSecond} />
           </div>

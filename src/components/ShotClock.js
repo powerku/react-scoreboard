@@ -107,12 +107,14 @@ function ShotClock(props) {
     <div className={classes.wrapper}>
       <div className={classes.shot}>{shot}</div>
       <div className={classes.buttonGroup}>
-        <button className={classes.startButton} onClick={startHandler}>
+        <button className="start" onClick={startHandler}>
           {state === "stop" ? "Start" : "Stop"}
         </button>
         <button onClick={plusShot}>+</button>
         <button onClick={minusShot}>-</button>
-        <button onClick={reset}>Reset</button>
+        <button className="start" onClick={reset}>
+          Reset
+        </button>
         <button onClick={reset14sec}>14</button>
       </div>
     </div>

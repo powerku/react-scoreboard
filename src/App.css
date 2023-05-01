@@ -35,6 +35,10 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
+button.start {
+    width: 103px;
+}
+
 button:hover {
     background-color: #0056b3;
     box-shadow: 0 0 5px #0056b3;
@@ -48,9 +52,18 @@ button:hover {
         padding: 5px 10px;
         margin-bottom: 5px;
     }
+    button.start {
+        width: 50px;
+        padding: 5px 0px;
+    }
 }
 
 @media (max-width: 639px) {
     body { font-size: 12px; }
+
+    button.start {
+        width: 50px;
+        padding: 5px 0px;
+    }
 }
 

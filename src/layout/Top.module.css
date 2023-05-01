@@ -47,6 +47,9 @@
     justify-content: space-evenly;
     text-align: center;
 }
+.btnStart {
+    padding: 5px 9px;
+}
 
 .container {
     display: flex;
