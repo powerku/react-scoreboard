@@ -5,16 +5,26 @@ import classes from "./App.css";
 import SoundButton from "./layout/SoundButton";
 import Tooltip from "./layout/Tooltip";
 import KakaoAdfit from "./components/KakaoAdfit";
+import React, { useState } from "react";
+import { MuteContext } from "./store/Context";
 
 function App() {
+  const [isMute, setIsMute] = useState(false);
+
+  const toggleIsMute = () => {
+    setIsMute((prevIsMute) => !prevIsMute);
+  };
+
   return (
-    <Layout>
-      <KakaoAdfit></KakaoAdfit>
-      <Top></Top>
-      <Bottom></Bottom>
-      <SoundButton></SoundButton>
-      <Tooltip></Tooltip>
-    </Layout>
+    <MuteContext.Provider value={isMute}>
+      <Layout>
+        <KakaoAdfit></KakaoAdfit>
+        <Top></Top>
+        <Bottom></Bottom>
+        <SoundButton toggleIsMute={toggleIsMute}></SoundButton>
+        <Tooltip></Tooltip>
+      </Layout>
+    </MuteContext.Provider>
   );
 }
 

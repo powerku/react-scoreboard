@@ -1,12 +1,21 @@
 import classes from "./ShotClock.module.css";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import buzzerUrl from "../sound/buzzer.mp3";
+import { MuteContext } from "../store/Context";
 
 function ShotClock(props) {
   const [state, setState] = useState("stop");
   const [shot, setShot] = useState(24);
   const intervalRef = useRef(null);
   const buzzer = new Audio(buzzerUrl);
+  const isMute = useContext(MuteContext);
+
   function plusShot() {
     let value = Number(shot) + 1;
     value = value.toString().length < 2 ? "0" + value : value;
@@ -51,9 +60,11 @@ function ShotClock(props) {
     setShot((c) => {
       let value = Number(c) - 1;
       if (value === 0) {
-        buzzer.play().then(() => {
-          stop();
-        });
+        if (!isMute) {
+          buzzer.play();
+        }
+        stop();
+
         setState("stop");
       }
       if (value < 0) {
@@ -77,7 +88,7 @@ function ShotClock(props) {
   }
 
   function startHandler() {
-    if (state === "stop") {
+    if (state === "stop" && shot > 0) {
       setState("start");
       start();
     } else {

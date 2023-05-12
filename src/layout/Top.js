@@ -2,10 +2,11 @@ import classes from "./Top.module.css";
 import MinuteClock from "../components/MinuteClock";
 import Foul from "../components/Foul";
 import SecondClock from "../components/SecondClock";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import MinuteButton from "../components/MinuteButton";
 import SecondButton from "../components/SecondButton";
 import longBuzzerUrl from "../sound/longBuzzer.mp3";
+import { MuteContext } from "../store/Context";
 
 function Top() {
   // const [state, setState] = useState("stop");
@@ -14,8 +15,8 @@ function Top() {
   const [homeFoul, setHomeFoul] = useState(0);
   const [awayFoul, setAwayFoul] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-
   const longBuzzer = new Audio(longBuzzerUrl);
+  const isMute = useContext(MuteContext);
 
   useEffect(() => {
     let intervalId = null;
@@ -25,7 +26,9 @@ function Top() {
         if (second <= 0) {
           if (minute <= 0) {
             setIsRunning(false);
-            longBuzzer.play();
+            if (!isMute) {
+              longBuzzer.play();
+            }
             clearInterval(intervalId);
           } else {
             setMinute((minutes) => minutes - 1);
