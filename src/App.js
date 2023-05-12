@@ -4,10 +4,12 @@ import Bottom from "./layout/Bottom";
 import classes from "./App.css";
 import SoundButton from "./layout/SoundButton";
 import Tooltip from "./layout/Tooltip";
+import KakaoAdfit from "./components/KakaoAdfit";
 
 function App() {
   return (
     <Layout>
+      <KakaoAdfit></KakaoAdfit>
       <Top></Top>
       <Bottom></Bottom>
       <SoundButton></SoundButton>

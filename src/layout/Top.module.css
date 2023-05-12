@@ -2,7 +2,7 @@
     display: flex;
     align-items: flex-end;
     width: 100%;
-    height: 50%;
+    height: calc(50% - 45px);
     justify-content: space-between
 }
 
@@ -30,14 +30,20 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    font-size: 400px;
+    font-size: 350px;
 }
 
 @media (max-width: 767px) {
+    .top {
+        height: 50%;
+    }
     .timeWrapper { font-size: 120px; }
 }
 
 @media (max-width: 430px) {
+    .top {
+        height: 50%;
+    }
     .timeWrapper { font-size: 100px; }
 }
 
