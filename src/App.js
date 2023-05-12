@@ -7,23 +7,29 @@ import Tooltip from "./layout/Tooltip";
 import KakaoAdfit from "./components/KakaoAdfit";
 import React, { useState } from "react";
 import { MuteContext } from "./store/Context";
+import { TimeContext } from "./store/Context";
 
 function App() {
   const [isMute, setIsMute] = useState(false);
-
+  const [totalTime, setTotalTime] = useState(10);
+  const [shotTime, setShotTime] = useState(24);
   const toggleIsMute = () => {
     setIsMute((prevIsMute) => !prevIsMute);
   };
 
   return (
-    <MuteContext.Provider value={isMute}>
-      <Layout>
-        <KakaoAdfit></KakaoAdfit>
-        <Top></Top>
-        <Bottom></Bottom>
-        <SoundButton toggleIsMute={toggleIsMute}></SoundButton>
-        <Tooltip></Tooltip>
-      </Layout>
+    <MuteContext.Provider value={{ isMute, toggleIsMute }}>
+      <TimeContext.Provider
+        value={{ totalTime, setTotalTime, shotTime, setShotTime }}
+      >
+        <Layout>
+          <KakaoAdfit></KakaoAdfit>
+          <Top></Top>
+          <Bottom></Bottom>
+          <SoundButton></SoundButton>
+          <Tooltip></Tooltip>
+        </Layout>
+      </TimeContext.Provider>
     </MuteContext.Provider>
   );
 }

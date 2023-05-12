@@ -7,14 +7,15 @@ import React, {
   useState,
 } from "react";
 import buzzerUrl from "../sound/buzzer.mp3";
-import { MuteContext } from "../store/Context";
+import { MuteContext, TimeContext } from "../store/Context";
 
 function ShotClock(props) {
+  const { shotTime, setShotTime } = useContext(TimeContext);
+  const isMute = useContext(MuteContext);
   const [state, setState] = useState("stop");
-  const [shot, setShot] = useState(24);
+  const [shot, setShot] = useState(shotTime);
   const intervalRef = useRef(null);
   const buzzer = new Audio(buzzerUrl);
-  const isMute = useContext(MuteContext);
 
   function plusShot() {
     let value = Number(shot) + 1;
@@ -26,7 +27,6 @@ function ShotClock(props) {
   const handleKeyUp = useCallback(
     (event) => {
       // do stuff with stateVariable and event
-      console.log(event);
     },
     [state]
   );
@@ -54,7 +54,7 @@ function ShotClock(props) {
     return () => {
       document.removeEventListener("keyup", shortcut);
     };
-  }, [handleKeyUp]);
+  }, [handleKeyUp, shotTime]);
 
   function minusShot() {
     setShot((c) => {
@@ -78,7 +78,7 @@ function ShotClock(props) {
 
   function reset() {
     stop();
-    setShot(24);
+    setShot(shotTime);
     setState("stop");
   }
 

@@ -6,11 +6,11 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import MinuteButton from "../components/MinuteButton";
 import SecondButton from "../components/SecondButton";
 import longBuzzerUrl from "../sound/longBuzzer.mp3";
-import { MuteContext } from "../store/Context";
+import { MuteContext, TimeContext } from "../store/Context";
 
 function Top() {
-  // const [state, setState] = useState("stop");
-  const [minute, setMinute] = useState(10);
+  const { totalTime, setTotalTime } = useContext(TimeContext);
+  const [minute, setMinute] = useState(totalTime);
   const [second, setSecond] = useState(0);
   const [homeFoul, setHomeFoul] = useState(0);
   const [awayFoul, setAwayFoul] = useState(0);
@@ -71,8 +71,12 @@ function Top() {
 
   function resetButtonHandler() {
     setIsRunning(false);
-    setMinute(10);
+    setMinute(totalTime);
     setSecond(0);
+  }
+
+  function saveButtonHandler() {
+    setTotalTime(minute);
   }
 
   return (
@@ -98,6 +102,9 @@ function Top() {
               </button>
               <button className="start" onClick={resetButtonHandler}>
                 Reset
+              </button>
+              <button className="start" onClick={saveButtonHandler}>
+                Save
               </button>
             </div>
             <SecondButton second={second} setSecond={setSecond} />

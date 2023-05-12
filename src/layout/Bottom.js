@@ -1,11 +1,9 @@
 import Score from "../components/Score";
 import classes from "./Bottom.module.css";
 import ShotClock from "../components/ShotClock";
-import ScorePointButton from "../components/ScorePointButton";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import buzzerUrl from "../sound/buzzer.mp3";
+import React, { useState } from "react";
 
-function Bottom() {
+function Bottom(props) {
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
 
