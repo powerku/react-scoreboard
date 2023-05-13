@@ -119,13 +119,14 @@ function ShotClock(props) {
     <div className={classes.wrapper}>
       <div className={classes.QuarterRadioContainer}>
         {quarter.map((q) => (
-          <label className={classes.QuarterRadioLabel}>
+          <label key={q} className={classes.QuarterRadioLabel}>
             {q}
             <input
               type="radio"
               value={q}
               className={classes.QuarterRadioInput}
               checked={selectedQuarter === q}
+              readOnly={true}
             />
           </label>
         ))}
