@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/react-scoreboard/static/css/main.72bfd580.css",
-    "main.js": "/react-scoreboard/static/js/main.19dd6f79.js",
+    "main.css": "/react-scoreboard/static/css/main.52d71234.css",
+    "main.js": "/react-scoreboard/static/js/main.c75a3048.js",
     "static/media/nba_sound.mp3": "/react-scoreboard/static/media/nba_sound.ee9947d64036de7cc2f3.mp3",
     "static/media/longBuzzer.mp3": "/react-scoreboard/static/media/longBuzzer.a60dc9604d8277c3df2e.mp3",
     "static/media/buzzer.mp3": "/react-scoreboard/static/media/buzzer.ee37d6ea31548104295b.mp3",
     "static/media/Digital_Dismay.otf": "/react-scoreboard/static/media/Digital_Dismay.8a8838f38696eb20b243.otf",
     "index.html": "/react-scoreboard/index.html",
-    "main.72bfd580.css.map": "/react-scoreboard/static/css/main.72bfd580.css.map",
-    "main.19dd6f79.js.map": "/react-scoreboard/static/js/main.19dd6f79.js.map"
+    "main.52d71234.css.map": "/react-scoreboard/static/css/main.52d71234.css.map",
+    "main.c75a3048.js.map": "/react-scoreboard/static/js/main.c75a3048.js.map"
   },
   "entrypoints": [
-    "static/css/main.72bfd580.css",
-    "static/js/main.19dd6f79.js"
+    "static/css/main.52d71234.css",
+    "static/js/main.c75a3048.js"
   ]
 }
