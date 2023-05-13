@@ -8,13 +8,14 @@ import SecondButton from "../components/SecondButton";
 import longBuzzerUrl from "../sound/longBuzzer.mp3";
 import { MuteContext, TimeContext } from "../store/Context";
 
-function Top() {
+function Top(props) {
   const { totalTime, setTotalTime } = useContext(TimeContext);
   const [minute, setMinute] = useState(totalTime);
   const [second, setSecond] = useState(0);
   const [homeFoul, setHomeFoul] = useState(0);
   const [awayFoul, setAwayFoul] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [breakTime, setBreakTime] = useState(false);
   const longBuzzer = new Audio(longBuzzerUrl);
   const { isMute } = useContext(MuteContext);
 
@@ -26,9 +27,12 @@ function Top() {
         if (second <= 0) {
           if (minute <= 0) {
             setIsRunning(false);
+            setBreakTime(false);
             if (!isMute) {
               longBuzzer.play();
             }
+            quarterButtonHandler();
+
             clearInterval(intervalId);
           } else {
             setMinute((minutes) => minutes - 1);
@@ -79,6 +83,26 @@ function Top() {
     setTotalTime(minute);
   }
 
+  function nextQuarter() {
+    if (breakTime) {
+      setIsRunning(false);
+      setMinute(1);
+      setSecond(0);
+    } else {
+      if (props.quarter === 5) {
+        props.setQuarter(1);
+      } else {
+        props.setQuarter(props.quarter + 1);
+      }
+      resetButtonHandler();
+    }
+  }
+
+  function quarterButtonHandler() {
+    setBreakTime(!breakTime);
+    nextQuarter();
+  }
+
   return (
     <React.Fragment>
       <div className={classes.top}>
@@ -103,6 +127,7 @@ function Top() {
               <button className="start" onClick={resetButtonHandler}>
                 Reset
               </button>
+              <button onClick={quarterButtonHandler}>Quarter</button>
               <button className="start" onClick={saveButtonHandler}>
                 Save
               </button>

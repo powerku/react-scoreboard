@@ -11,7 +11,7 @@ function Bottom(props) {
     <React.Fragment>
       <div className={classes.bottom}>
         <Score type="Home" score={homeScore} setScore={setHomeScore} />
-        <ShotClock />
+        <ShotClock quarter={props.quarter} />
         <Score type="Away" score={awayScore} setScore={setAwayScore} />
       </div>
     </React.Fragment>

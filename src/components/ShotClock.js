@@ -16,7 +16,8 @@ function ShotClock(props) {
   const [shot, setShot] = useState(shotTime);
   const intervalRef = useRef(null);
   const buzzer = new Audio(buzzerUrl);
-
+  const quarter = [1, 2, 3, 4, 5];
+  const selectedQuarter = props.quarter;
   function plusShot() {
     let value = Number(shot) + 1;
     value = value.toString().length < 2 ? "0" + value : value;
@@ -116,6 +117,19 @@ function ShotClock(props) {
 
   return (
     <div className={classes.wrapper}>
+      <div className={classes.QuarterRadioContainer}>
+        {quarter.map((q) => (
+          <label className={classes.QuarterRadioLabel}>
+            {q}
+            <input
+              type="radio"
+              value={q}
+              className={classes.QuarterRadioInput}
+              checked={selectedQuarter === q}
+            />
+          </label>
+        ))}
+      </div>
       <div className={classes.shot}>{shot}</div>
       <div className={classes.buttonGroup}>
         <button className="start" onClick={startHandler}>

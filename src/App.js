@@ -13,6 +13,7 @@ function App() {
   const [isMute, setIsMute] = useState(false);
   const [totalTime, setTotalTime] = useState(10);
   const [shotTime, setShotTime] = useState(24);
+  const [quarter, setQuarter] = useState(1);
   const toggleIsMute = () => {
     setIsMute((prevIsMute) => !prevIsMute);
   };
@@ -24,8 +25,8 @@ function App() {
       >
         <Layout>
           <KakaoAdfit></KakaoAdfit>
-          <Top></Top>
-          <Bottom></Bottom>
+          <Top quarter={quarter} setQuarter={setQuarter}></Top>
+          <Bottom quarter={quarter}></Bottom>
           <SoundButton></SoundButton>
           <Tooltip></Tooltip>
         </Layout>
