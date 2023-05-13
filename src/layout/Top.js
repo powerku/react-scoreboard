@@ -16,7 +16,7 @@ function Top() {
   const [awayFoul, setAwayFoul] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const longBuzzer = new Audio(longBuzzerUrl);
-  const isMute = useContext(MuteContext);
+  const { isMute } = useContext(MuteContext);
 
   useEffect(() => {
     let intervalId = null;

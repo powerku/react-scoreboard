@@ -11,7 +11,7 @@ import { MuteContext, TimeContext } from "../store/Context";
 
 function ShotClock(props) {
   const { shotTime, setShotTime } = useContext(TimeContext);
-  const isMute = useContext(MuteContext);
+  const { isMute } = useContext(MuteContext);
   const [state, setState] = useState("stop");
   const [shot, setShot] = useState(shotTime);
   const intervalRef = useRef(null);
