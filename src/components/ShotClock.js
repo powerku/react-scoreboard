@@ -115,6 +115,18 @@ function ShotClock(props) {
     intervalRef.current = null;
   }, [shot]);
 
+  const changeScore = () => {
+    const homeScore = props.homeScore;
+    const awayScore = props.awayScore;
+    const homeName = props.homeName;
+    const awayName = props.awayName;
+
+    props.setHomeScore(awayScore);
+    props.setAwayScore(homeScore);
+    props.setHomeName(awayName);
+    props.setAwayName(homeName);
+  }
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.QuarterRadioContainer}>
@@ -142,6 +154,7 @@ function ShotClock(props) {
           Reset
         </button>
         <button onClick={reset14sec}>14</button>
+        <button onClick={changeScore}>↔️</button>
       </div>
     </div>
   );
