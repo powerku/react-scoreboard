@@ -5,7 +5,7 @@ import React from "react";
 function Score(props) {
     const onClick = () => {
         let name = prompt('팀 이름을 입력하세요');
-        if (props.type === 'home') {
+        if (props.type === 'Home') {
             props.setHomeName(name || 'Home');
         } else {
             props.setAwayName(name || 'Away');
