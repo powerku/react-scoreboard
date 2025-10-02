@@ -47,9 +47,9 @@ function ShotClock({
           buzzer.play();
         }
       }
-    }, 10);
+    }, 100);
 
-    return () => clearInterval(intervalRef.current); // Cleanup on component unmount or interval reset
+    return () => clearInterval(intervalRef.current);
   }, [state, startTime]);
 
   useEffect(() => {
@@ -111,16 +111,16 @@ function ShotClock({
   };
 
   const formatedCurrentShotTime = () => {
-    const seconds = Math.floor((currentShotTime % (60 * 1000)) / 1000);
-    const millis = currentShotTime % 10;
+    const second = Math.floor((currentShotTime % (60 * 1000)) / 1000);
+    const milliSecond = Math.floor((currentShotTime % 1000) / 100);
 
     if (currentShotTime < 0) return "00";
 
-    if (seconds < 5) {
-      return `${seconds}.${millis}`;
+    if (second < 5) {
+      return `${second}.${milliSecond}`;
     }
 
-    return seconds > 10 ? String(seconds) : String(seconds).padStart(2, "0");
+    return second > 10 ? String(second) : String(second).padStart(2, "0");
   };
 
   return (
