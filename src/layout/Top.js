@@ -1,138 +1,190 @@
 import classes from "./Top.module.css";
-import MinuteClock from "../components/MinuteClock";
 import Foul from "../components/Foul";
-import SecondClock from "../components/SecondClock";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import MinuteButton from "../components/MinuteButton";
-import SecondButton from "../components/SecondButton";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import longBuzzerUrl from "../sound/longBuzzer.mp3";
 import { MuteContext, TimeContext } from "../store/Context";
 
+const longBuzzer = new Audio(longBuzzerUrl);
+
 function Top(props) {
   const { totalTime, setTotalTime } = useContext(TimeContext);
-  const [minute, setMinute] = useState(totalTime);
-  const [second, setSecond] = useState(0);
+  const [currentTime, setCurrentTime] = useState(totalTime * 60 * 1000);
+  const [startTime, setStartTime] = useState(null);
   const [homeFoul, setHomeFoul] = useState(0);
   const [awayFoul, setAwayFoul] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [breakTime, setBreakTime] = useState(false);
-  const longBuzzer = new Audio(longBuzzerUrl);
+
+  const intervalRef = useRef(null);
   const { isMute } = useContext(MuteContext);
 
   useEffect(() => {
-    let intervalId = null;
+    clearInterval(intervalRef.current);
 
-    if (isRunning) {
-      intervalId = setInterval(() => {
-        if (second <= 0) {
-          if (minute <= 0) {
-            setIsRunning(false);
-            setBreakTime(false);
-            if (!isMute) {
-              longBuzzer.play();
-            }
-            quarterButtonHandler();
-
-            clearInterval(intervalId);
-          } else {
-            setMinute((minutes) => minutes - 1);
-            setSecond(59);
-          }
-        } else {
-          setSecond((seconds) => seconds - 1);
-        }
-      }, 1000);
+    if (!isRunning) {
+      return;
+    }
+    if (startTime === null) {
+      return;
     }
 
-    return () => clearInterval(intervalId);
-  }, [second, minute, isRunning]);
+    intervalRef.current = setInterval(() => {
+      const time = currentTime - (new Date() - startTime);
+      setCurrentTime(time);
 
-  const handleKeyUp = useCallback(
-    (event) => {
-      // do stuff with stateVariable and event
-    },
-    [second, minute, isRunning]
-  );
+      if (time <= 0) {
+        clearInterval(intervalRef.current);
+        setIsRunning(false);
+        goNextQuarter();
+        if (!isMute) {
+          longBuzzer.play();
+        }
+      }
+    }, 100);
+  }, [isRunning, startTime]);
 
   useEffect(() => {
-    const shortcut = (event) => {
-      if (event.code === "Space") {
-        event.preventDefault();
-        setIsRunning(!isRunning);
-      }
-
-      if (event.key === "Shift") {
-        event.preventDefault();
-        resetButtonHandler();
-      }
-    };
-
-    document.addEventListener("keyup", shortcut);
+    document.addEventListener("keyup", handleShortcutKey);
     return () => {
-      document.removeEventListener("keyup", shortcut);
+      document.removeEventListener("keyup", handleShortcutKey);
     };
-  }, [handleKeyUp]);
+  }, [isRunning, currentTime]);
 
-  function resetButtonHandler() {
+  const start = () => {
+    if (currentTime > 0) {
+      const currentDate = new Date();
+      setStartTime(currentDate);
+      setIsRunning(true);
+    }
+  };
+
+  const stop = () => {
+    clearInterval(intervalRef.current);
     setIsRunning(false);
-    setMinute(totalTime);
-    setSecond(0);
+  };
+
+  function reset() {
+    setIsRunning(false);
+    setCurrentTime(totalTime * 60 * 1000);
   }
 
-  function saveButtonHandler() {
-    setTotalTime(minute);
-  }
-
-  function nextQuarter() {
-    if (breakTime) {
+  function goNextQuarter() {
+    if (!breakTime) {
       setIsRunning(false);
-      setMinute(1);
-      setSecond(0);
+      setCurrentTime(60 * 1000);
     } else {
       if (props.quarter === 5) {
         props.setQuarter(1);
       } else {
         props.setQuarter(props.quarter + 1);
       }
-      resetButtonHandler();
+      reset();
     }
+
+    setBreakTime((prev) => !prev);
   }
 
-  function quarterButtonHandler() {
-    setBreakTime(!breakTime);
-    nextQuarter();
-  }
+  const handleShortcutKey = (event) => {
+    event.preventDefault();
+
+    switch (event.code) {
+      case "Space":
+        isRunning ? stop() : start();
+        break;
+      case "ShiftLeft":
+        reset();
+        break;
+      default:
+    }
+  };
+
+  const formatedTime = () => {
+    const minutes = Math.floor(currentTime / (60 * 1000));
+    const seconds = Math.floor((currentTime % (60 * 1000)) / 1000);
+    const milliSecond = Math.floor((currentTime % 1000) / 100);
+
+    if (currentTime < 0) return "00:00";
+
+    if (currentTime < 60 * 1000) {
+      return `${seconds}.${milliSecond}`;
+    }
+
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
 
   return (
     <React.Fragment>
       <div className={classes.top}>
         <Foul type="Home" count={homeFoul} setCount={setHomeFoul}></Foul>
         <div>
-          <div className={classes.timeWrapper}>
-            <MinuteClock minute={minute} setMinute={setMinute} />
-            <div className={classes.center}>
-              <span className={classes.colon}>:</span>
-            </div>
-            <SecondClock second={second} setSecond={setSecond} />
-          </div>
+          <div className={classes.timeWrapper}>{formatedTime()}</div>
           <div className={classes.buttonWrapper}>
-            <MinuteButton minute={minute} setMinute={setMinute} />
             <div>
               <button
-                className="start"
-                onClick={() => setIsRunning(!isRunning)}
+                onClick={() =>
+                  currentTime > 60 * 1000
+                    ? setCurrentTime((prev) => prev + 60 * 1000)
+                    : setCurrentTime((prev) => prev + 1000)
+                }
               >
-                {!isRunning ? "Start" : "Stop"}
+                +
               </button>
-              <button className="start" onClick={resetButtonHandler}>
+              <button
+                onClick={() =>
+                  currentTime > 60 * 1000
+                    ? setCurrentTime((prev) => prev - 60 * 1000)
+                    : setCurrentTime((prev) => prev - 1000)
+                }
+              >
+                -
+              </button>
+            </div>
+            <div>
+              {isRunning ? (
+                <button className="start" onClick={() => stop()}>
+                  Stop
+                </button>
+              ) : (
+                <button className="start" onClick={() => start()}>
+                  Start
+                </button>
+              )}
+              <button className="start" onClick={reset}>
                 Reset
               </button>
-              <button onClick={quarterButtonHandler}>Quarter</button>
-              <button className="start" onClick={saveButtonHandler}>
+              <button onClick={() => goNextQuarter()}>Quarter</button>
+              <button
+                className="start"
+                onClick={() =>
+                  setTotalTime(Math.floor(currentTime / (60 * 1000)))
+                }
+              >
                 Save
               </button>
             </div>
-            <SecondButton second={second} setSecond={setSecond} />
+            <div>
+              <button
+                onClick={() =>
+                  currentTime > 60 * 1000
+                    ? setCurrentTime((prev) => prev + 1000)
+                    : setCurrentTime((prev) => prev + 100)
+                }
+              >
+                +
+              </button>
+              <button
+                onClick={() =>
+                  currentTime > 60 * 1000
+                    ? setCurrentTime((prev) => prev - 1000)
+                    : setCurrentTime((prev) => prev - 100)
+                }
+              >
+                -
+              </button>
+            </div>
           </div>
         </div>
         <Foul type="Away" count={awayFoul} setCount={setAwayFoul}></Foul>
