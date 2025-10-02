@@ -1,160 +1,166 @@
 import classes from "./ShotClock.module.css";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import buzzerUrl from "../sound/buzzer.mp3";
 import { MuteContext, TimeContext } from "../store/Context";
 
-function ShotClock(props) {
-  const { shotTime, setShotTime } = useContext(TimeContext);
-  const { isMute } = useContext(MuteContext);
+const buzzer = new Audio(buzzerUrl);
+const quarters = [1, 2, 3, 4, 5];
+
+function ShotClock({
+  quarter: currentQuarter,
+  homeScore,
+  awayScore,
+  homeName,
+  awayName,
+  setHomeScore,
+  setAwayScore,
+  setHomeName,
+  setAwayName,
+}) {
+  const { shotTime } = useContext(TimeContext);
+  const [currentShotTime, setCurrentShotTime] = useState(shotTime * 1000);
+  const [startTime, setStartTime] = useState(null);
   const [state, setState] = useState("stop");
-  const [shot, setShot] = useState(shotTime);
+
   const intervalRef = useRef(null);
-  const buzzer = new Audio(buzzerUrl);
-  const quarter = [1, 2, 3, 4, 5];
-  const selectedQuarter = props.quarter;
-  function plusShot() {
-    let value = Number(shot) + 1;
-    value = value.toString().length < 2 ? "0" + value : value;
-
-    setShot(value);
-  }
-
-  const handleKeyUp = useCallback(
-    (event) => {
-      // do stuff with stateVariable and event
-    },
-    [state]
-  );
+  const { isMute } = useContext(MuteContext);
 
   useEffect(() => {
-    const shortcut = (event) => {
-      if (event.code === "KeyA") {
-        // 공격 시간 시작/중지
-        event.preventDefault();
-        startHandler();
-      }
-      if (event.code === "KeyS") {
-        // 공격 시간 리셋
-        event.preventDefault();
-        reset();
-      }
+    clearInterval(intervalRef.current);
 
-      if (event.code === "KeyD") {
-        // 공격 시간 14초
-        event.preventDefault();
-        reset14sec();
-      }
-    };
-    document.addEventListener("keyup", shortcut);
-    return () => {
-      document.removeEventListener("keyup", shortcut);
-    };
-  }, [handleKeyUp, shotTime]);
+    if (state === "stop") {
+      return;
+    }
 
-  function minusShot() {
-    setShot((c) => {
-      let value = Number(c) - 1;
-      if (value === 0) {
+    if (startTime === null) {
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      const shotTime = currentShotTime - (new Date() - startTime);
+      setCurrentShotTime(shotTime);
+
+      if (shotTime <= 0) {
+        clearInterval(intervalRef.current);
+        setState("stop");
         if (!isMute) {
           buzzer.play();
         }
-        stop();
-
-        setState("stop");
       }
-      if (value < 0) {
-        value = 0;
-      }
+    }, 10);
 
-      value = value.toString().length < 2 ? "0" + value : value;
-      return value;
-    });
-  }
+    return () => clearInterval(intervalRef.current); // Cleanup on component unmount or interval reset
+  }, [state, startTime]);
 
-  function reset() {
-    stop();
-    setShot(shotTime);
-    setState("stop");
-  }
+  useEffect(() => {
+    document.addEventListener("keyup", handleShortcutKey);
+    return () => {
+      document.removeEventListener("keyup", handleShortcutKey);
+    };
+  }, [state, currentShotTime]);
 
-  function reset14sec() {
-    stop();
-    setShot(14);
-  }
-
-  function startHandler() {
-    if (state === "stop" && shot > 0) {
+  const start = () => {
+    if (currentShotTime > 0) {
+      const currentDate = new Date();
+      setStartTime(currentDate);
       setState("start");
-      start();
-    } else {
-      setState("stop");
-      stop();
     }
-  }
+  };
 
-  const start = useCallback(() => {
-    if (intervalRef.current !== null) {
-      return;
-    }
-    intervalRef.current = setInterval(() => {
-      minusShot();
-    }, 1000);
-  }, [shot]);
-
-  const stop = useCallback(() => {
-    if (intervalRef.current === null) {
-      return;
-    }
+  const stop = () => {
     clearInterval(intervalRef.current);
-    intervalRef.current = null;
-  }, [shot]);
+    setState("stop");
+  };
 
-  const changeScore = () => {
-    const homeScore = props.homeScore;
-    const awayScore = props.awayScore;
-    const homeName = props.homeName;
-    const awayName = props.awayName;
+  const reset = () => {
+    setCurrentShotTime(shotTime * 1000);
+    setState("stop");
+  };
 
-    props.setHomeScore(awayScore);
-    props.setAwayScore(homeScore);
-    props.setHomeName(awayName);
-    props.setAwayName(homeName);
-  }
+  const reset14sec = () => {
+    setCurrentShotTime(14 * 1000);
+    setState("stop");
+  };
+
+  const handleChangeScore = () => {
+    setHomeScore(awayScore);
+    setAwayScore(homeScore);
+    setHomeName(awayName);
+    setAwayName(homeName);
+  };
+
+  const handleShortcutKey = (event) => {
+    event.preventDefault();
+
+    switch (event.code) {
+      case "KeyA":
+        if (state === "start") {
+          stop();
+        } else {
+          start();
+        }
+        break;
+      case "KeyS":
+        reset();
+        break;
+      case "KeyD":
+        reset14sec();
+        break;
+      default:
+    }
+  };
+
+  const formatedCurrentShotTime = () => {
+    const seconds = Math.floor((currentShotTime % (60 * 1000)) / 1000);
+    const millis = currentShotTime % 10;
+
+    if (currentShotTime < 0) return "00";
+
+    if (seconds < 5) {
+      return `${seconds}.${millis}`;
+    }
+
+    return seconds > 10 ? String(seconds) : String(seconds).padStart(2, "0");
+  };
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.QuarterRadioContainer}>
-        {quarter.map((q) => (
-          <label key={q} className={classes.QuarterRadioLabel}>
-            {q}
+        {quarters.map((quarter) => (
+          <label key={quarter} className={classes.QuarterRadioLabel}>
+            {quarter}
             <input
               type="radio"
-              value={q}
+              value={currentQuarter}
               className={classes.QuarterRadioInput}
-              checked={selectedQuarter === q}
+              checked={quarter === currentQuarter}
               readOnly={true}
             />
           </label>
         ))}
       </div>
-      <div className={classes.shot}>{shot}</div>
+      <div className={classes.shot}>{formatedCurrentShotTime()}</div>
       <div className={classes.buttonGroup}>
-        <button className="start" onClick={startHandler}>
-          {state === "stop" ? "Start" : "Stop"}
+        {state === "start" ? (
+          <button className="start" onClick={() => stop()}>
+            Stop
+          </button>
+        ) : (
+          <button className="start" onClick={() => start()}>
+            Start
+          </button>
+        )}
+        <button onClick={() => setCurrentShotTime((prev) => prev + 1000)}>
+          +
         </button>
-        <button onClick={plusShot}>+</button>
-        <button onClick={minusShot}>-</button>
-        <button className="start" onClick={reset}>
+        <button onClick={() => setCurrentShotTime((prev) => prev - 1000)}>
+          -
+        </button>
+        <button className="start" onClick={() => reset()}>
           Reset
         </button>
-        <button onClick={reset14sec}>14</button>
-        <button onClick={changeScore}>↔️</button>
+        <button onClick={() => reset14sec()}>14</button>
+        <button onClick={handleChangeScore}>↔️</button>
       </div>
     </div>
   );
